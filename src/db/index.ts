@@ -1,8 +1,6 @@
-import { drizzle } from 'drizzle-orm/libsql';
-import { createClient } from '@libsql/client';
-import * as schema from '@/db/schema';
+import { Pool } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import * as schema from "./schema";
 
-// ローカルのSQLiteファイルに接続
-const client = createClient({ url: process.env.DB_FILE_NAME || 'file:dev.db' });
-
-export const db = drizzle(client, { schema });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+export const db = drizzle({ client: pool, schema: schema });
